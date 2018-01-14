@@ -1,0 +1,33 @@
+= Spring Eco Samples: Eureka Client
+:author: Hafid Haddouti
+
+Regarding the Eureka sample contains this subproject the client implementation with the following requirements and solutions
+
+|===
+| Requirement | Solution | Modules
+
+| Service Discovery - Do not link hardcoded to the desired service (endpoint)
+| Discover the relevant service using a Service Registry (here: Eureka) and a service name. With this service name delivers the Service Registry the possible service endpoint.
+| Spring Cloud, Netflix Eureka
+
+| Resilience - In case of service unreachable fail fast and provide a fallback
+| Using Circuit Breaker
+| Hystrix, FeignClient + Ribbon
+
+| Testable - For testing is the usage of Eureka not obligatory
+| Use a test profile and disable Eureka and set the direkt link to the service for Ribbon
+| Spring Profile, FeignClient + Robbin
+
+| Monitoring - Provide monitoring information to get continuous information about the state of the app
+| Use metrics and Hystrix Dashboard
+| Actuator, Hystrix, Hystrix Dashboard
+|===
+
+Available Endpoints
+|===
+| URL | Description
+
+| http://localhost:9011/c | Calls service endpoint with Spring RestTemplate; which do not provide any fallback mechanisms.
+| http://localhost:9011/c2 | Calls service endpoint with FeignClient and Hystrix; Fallback available.
+| http://localhost:9011/lookup/se-serviceapp1 | Util endpoint to print out the info data for the requested service name
+|===
