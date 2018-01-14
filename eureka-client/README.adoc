@@ -7,7 +7,7 @@ Regarding the Eureka sample contains this subproject the client implementation w
 | Requirement | Solution | Modules
 
 | Service Discovery - Do not link hardcoded to the desired service (endpoint)
-| Discover the relevant service using a Service Registry (here: Eureka) and a service name. With this service name delivers the Service Registry the possible service endpoint.
+| Discover the relevant service using a Service Registry (here: Eureka) and a *service name*. With this service name delivers the Service Registry the possible service endpoint.
 | Spring Cloud, Netflix Eureka
 
 | Resilience - In case of service unreachable fail fast and provide a fallback

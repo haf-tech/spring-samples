@@ -7,7 +7,7 @@ Regarding the Eureka sample contains this subproject the service implementation 
 | Requirement | Solution | Modules
 
 | Service Registry - Registery the service during startup and update regularly the state
-| Register the service using a Service Registry (here: Eureka) and a service name, which will be used from the clients to discovery and usage. 
+| Register the service using a Service Registry (here: Eureka) and a *service name*, which will be used from the clients for discovery and usage. 
 | Spring Cloud, Netflix Eureka
 
 | Monitoring - Provide monitoring information to get continuous information about the state of the app
