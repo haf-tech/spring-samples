@@ -9,5 +9,5 @@ Spring Eco samples for multiple Spring modules.
 
 | Service Registry & Discovery
 | Handles Service registration and discovery in Microservices landscape using Spring Cloud and Eureka
-| Spring Cloud, Netflix Eureka, Hystrix, FeignClient
+| Spring Cloud, Netflix Eureka, Hystrix, FeignClient, Security
 |===
