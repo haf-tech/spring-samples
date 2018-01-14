@@ -1,0 +1,26 @@
+# Service Registry
+# application.yml
+
+# ### General
+server:
+   port: 9876
+   
+security:
+  basic:
+    enabled: true
+  user:
+      name: user
+      password: password
+         
+# ### Eureka
+# Do not self-register    
+eureka:
+   client:
+      registerWithEureka: false
+      fetchRegistry: false
+
+# Logging
+logging:
+    level:
+       com.netflix.eureka: 'OFF'
+       com.netflix.discovery: 'OFF'

@@ -1,0 +1,55 @@
+# Service 1
+# application.yml
+
+# ### General
+server:
+   port: 9021
+
+# deactivate security
+security:
+  basic:
+    enabled: false
+  user:
+      name: service
+      password: password
+      
+#No auth  protected 
+endpoints:
+   shutdown:
+      sensitive: false
+      #Enable shutdown endpoint
+      enabled: true
+
+# Info
+info:
+   app:
+      name: ${spring.application.name}
+      description: Haftech Service
+      
+   
+# ### Eureka
+eureka:
+   client:
+      region: default
+      # Retrieve registry info from Eureka and cache the
+      fetchRegistry: true
+      # Update cached registry info. Default 30sec
+      registryFetchIntervalSeconds: 5
+      registerWithEureka: true
+      availabilityZones: 
+        default: ${APPLICATION_DOMAIN:${DOMAIN:defaultZone}}
+      serviceUrl:
+        defaultZone: http://user:password@localhost:9876/eureka/
+      # Activate health check to Eureka Server  
+      healthcheck:
+         enabled: true   
+   instance:
+      # Renew interval (heartbeat) to Eureka Server. Default is 30sec
+      leaseRenewalIntervalInSeconds: 10
+      statusPageUrlPath: /info
+      healthCheckUrlPath: /health
+   metadataMap:
+      instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${server.port}}}
+      env: ${spring.profiles.active}
+      blub: 'ABC'
+

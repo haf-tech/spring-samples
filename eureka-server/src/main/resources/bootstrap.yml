@@ -1,0 +1,7 @@
+# Service Registry
+# bootstrap.yml
+
+# General
+spring:
+   application:
+      name: Haftech-ServiceRegistry

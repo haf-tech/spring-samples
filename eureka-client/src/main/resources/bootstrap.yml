@@ -1,0 +1,7 @@
+# Service Client 1
+# bootstrap.yml
+
+# General
+spring:
+   application:
+      name: Haftech-ServiceClient1

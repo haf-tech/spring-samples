@@ -1,0 +1,7 @@
+# Service 1
+# bootstrap.yml
+
+# General
+spring:
+   application:
+      name: SE-ServiceApp1

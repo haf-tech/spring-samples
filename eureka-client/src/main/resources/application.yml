@@ -1,0 +1,85 @@
+# Service Client 1
+# application.yml
+
+# ### General
+server:
+   port: 9011
+
+security:
+  basic:
+    enabled: true
+  user:
+      name: client
+      password: password
+      
+# Info
+info:
+   app:
+      name: ${spring.application.name}
+      description: haf-tech Service
+      
+         
+# ### Eureka
+eureka:
+   client:
+      region: default
+      registryFetchIntervalSeconds: 5
+      registerWithEureka: true
+      fetchRegistry: true
+      availabilityZones: 
+        default: ${APPLICATION_DOMAIN:${DOMAIN:defaultZone}}
+      serviceUrl:
+        defaultZone: http://user:password@localhost:9876/eureka/
+      # Activate health check to Eureka Server  
+      healthcheck:
+         enabled: true   
+   instance:
+      leaseRenewalIntervalInSeconds: 10
+      statusPageUrlPath: /info
+      healthCheckUrlPath: /health
+   metadataMap:
+      instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${server.port}}}
+
+# ### FeignClient
+# Activate Hystrix support
+feign:
+    hystrix:
+        enabled: true
+        
+# ### Application relevant properties
+se:
+   sc:
+     # Service1: name, used for linking
+     service1:
+        name: se-serviceapp1
+        
+        
+        
+# ### Profiles
+---
+# Test
+# Scenario without Eureka
+ 
+spring:
+   profiles: test
+   cloud:
+     discovery:
+        enabled: false
+
+security:
+  basic:
+    enabled: false
+            
+# Eureka: deactivate it
+eureka:
+  client:
+    enabled: false
+    
+ribbon:
+  eureka:
+    enabled: false   
+
+# Eureka is deactivated. In this case set the direct relation to the service endpoint
+se-serviceapp1:
+  ribbon:
+     listOfServers: localhost:9021
