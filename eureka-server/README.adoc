@@ -1,0 +1,24 @@
+= Spring Eco Samples: Eureka Service Registry
+:author: Hafid Haddouti
+
+Regarding the Eureka sample contains this subproject the service registry implementation with the following requirements and solutions
+
+|===
+| Requirement | Solution | Modules
+
+| Service Registry & Discovery - Provide the registry and discovery server
+| Usage e discovery server (here Eureka)
+| Spring Cloud, Netflix Eureka
+
+| Security - Protect the service registry endpoint
+| Use Spring security and basic authorization
+| Spring Security
+|===
+
+Available Endpoints
+|===
+| URL | Description
+
+| http://localhost:9876/ | Eureka Dashboard
+| http://localhost:9876/eureka/apps | Prints out the information for all applications. Used from different clients to establish the connections, like FeignClient + Ribbon
+|===
