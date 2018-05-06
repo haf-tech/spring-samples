@@ -1,0 +1,25 @@
+= Spring Eco Samples: Simple Data Provider
+:author: Hafid Haddouti
+
+Simple project providing multiple endpoints to deliver static or dynamic data. Some of the endpoints use external services to retrieve the data.
+
+|===
+| Endpoint | Description | External Service
+
+| data/internal/echo/{val}
+| Echo the given request parameter
+| n/a
+
+| data/internal/timestamp/{val}
+| Echo the given request parameter with the current timestamp
+| n/a
+
+| data/external/headers
+| Delivers some headers
+| http://httpbin.org
+
+| data/external/ip
+| Delivers the current IP of this app
+| http://httpbin.org
+|===
+

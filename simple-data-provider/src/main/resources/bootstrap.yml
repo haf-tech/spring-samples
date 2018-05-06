@@ -1,0 +1,7 @@
+# Simple Data Provider
+# bootstrap.yml
+
+# General
+spring:
+   application:
+      name: SimpleDataProvider

@@ -1,0 +1,19 @@
+# Simple Data Provider
+
+ ### General
+server:
+   port: 9021
+
+security:
+  basic:
+    enabled: false
+  user:
+      name: client
+      password: password
+      
+# Info
+info:
+   app:
+      name: ${spring.application.name}
+      description: haf-tech Service
+ 
