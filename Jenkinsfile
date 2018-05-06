@@ -3,6 +3,7 @@
 @Library('github.com/fabric8io/fabric8-pipeline-library@master')
 def canaryVersion = "1.0.${env.BUILD_NUMBER}"
 def utils = new io.fabric8.Utils()
+def envStage = utils.environmentNamespace('stage')
 
 mavenNode {
   checkout scm
@@ -16,6 +17,12 @@ mavenNode {
       stage('Build Release') {
         mavenCanaryRelease {
           version = canaryVersion
+        }
+      }
+      
+      stage('Rollout to Stage'){
+        apply{
+          environment = envStage
         }
       }
     }
