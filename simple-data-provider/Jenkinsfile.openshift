@@ -1,0 +1,87 @@
+pipeline {
+  agent {
+      label 'maven'
+  }
+  stages {
+    stage('Build App') {
+      steps {
+        sh "mvn install"
+      }
+    }
+    stage('Create Image Builder') {
+      when {
+        expression {
+          openshift.withCluster() {
+            return !openshift.selector("bc", "simple-data-provider").exists();
+          }
+        }
+      }
+      steps {
+        script {
+          openshift.withCluster() {
+            openshift.newBuild("--name=simple-data-provider", "--image-stream=runtime-name:latest", "--binary")
+          }
+        }
+      }
+    }
+    stage('Build Image') {
+      steps {
+        script {
+          openshift.withCluster() {
+            openshift.selector("bc", "simple-data-provider").startBuild("--from-file=target/simple-data-provider-spring.jar", "--wait")
+          }
+        }
+      }
+    }
+    stage('Promote to DEV') {
+      steps {
+        script {
+          openshift.withCluster() {
+            openshift.tag("simple-data-provider:latest", "simple-data-provider:dev")
+          }
+        }
+      }
+    }
+    stage('Create DEV') {
+      when {
+        expression {
+          openshift.withCluster() {
+            return !openshift.selector('dc', 'simple-data-provider-dev').exists()
+          }
+        }
+      }
+      steps {
+        script {
+          openshift.withCluster() {
+            openshift.newApp("simple-data-provider:latest", "--name=simple-data-provider-dev").narrow('svc').expose()
+          }
+        }
+      }
+    }
+    stage('Promote STAGE') {
+      steps {
+        script {
+          openshift.withCluster() {
+            openshift.tag("simple-data-provider:dev", "simple-data-provider:stage")
+          }
+        }
+      }
+    }
+    stage('Create STAGE') {
+      when {
+        expression {
+          openshift.withCluster() {
+            return !openshift.selector('dc', 'simple-data-provider-stage').exists()
+          }
+        }
+      }
+      steps {
+        script {
+          openshift.withCluster() {
+            openshift.newApp("simple-data-provider:stage", "--name=simple-data-provider-stage").narrow('svc').expose()
+          }
+        }
+      }
+    }
+  }
+}
