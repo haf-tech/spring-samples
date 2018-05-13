@@ -1,0 +1,12 @@
+#!/bin/bash
+set -eo pipefail
+
+S2I_SCRIPT_DIR="/usr/local/s2i"
+S2I_SOURCE_DIR="/tmp/src"
+
+# Generate directories which are needed during build phase
+mkdir -p $S2I_SOURCE_DIR/target/swagger/
+mkdir -p $S2I_SOURCE_DIR/target/asciidoc/snippets
+mkdir -p $S2I_SOURCE_DIR/target/asciidoc/generated
+mkdir -p $S2I_SOURCE_DIR/target/asciidoc/html
+mkdir -p $S2I_SOURCE_DIR/target/asciidoc/pdf
