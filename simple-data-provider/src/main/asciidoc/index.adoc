@@ -1,0 +1,21 @@
+= Simple Data Provider Documentation
+Hafid Haddouti
+:toc: left
+:toclevels: 3
+:source-highlighter: coderay
+:numbered:
+:hardbreaks:
+:revnumber: {release-version}
+:revdate: {localdate}
+:icons: font
+:pagenums:
+
+= Overview
+
+This documentation contains the information for the simple data provider project.
+
+
+include::{generated}/overview.adoc[]
+include::{generated}/paths.adoc[]
+include::{generated}/security.adoc[]
+include::{generated}/definitions.adoc[]
