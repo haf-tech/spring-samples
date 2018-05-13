@@ -14,7 +14,7 @@ public class RestInternalData {
 
 	@GetMapping(path = "echo/{val}")
 	public String echo(@PathVariable final String val) {
-		return String.format("Echo: < %s >", val);
+		return String.format("Echo: < %s >.", val);
 	}
 
 	@GetMapping(path = "timestamp/{val}")
