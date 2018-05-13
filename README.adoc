@@ -11,3 +11,76 @@ Spring Eco samples for multiple Spring modules.
 | Handles Service registration and discovery in Microservices landscape using Spring Cloud and Eureka
 | Spring Cloud, Netflix Eureka, Hystrix, FeignClient, Security
 |===
+
+== Openshift Integration
+Some of modules contains meta data for a Openshift integration. This integration enables the operation of the sub-module in a Openshift instance.
+
+Enabled modules are:
+* simple-data-provider
+
+To install the application in Openshift
+```bash
+oc new-app --template=master-spring-template -p PROJECT_NAME=code-4 -p APP_NAME=simple-data-provider -p SOURCE_REPOSITORY_URL=https://github.com/haf-tech/spring-samples  -p SOURCE_REF=master -p SOURCE_SUB_MODULE_DIR=simple-data-provider -p APP_HTTP_PORT=9021 -p WEBHOOK_GITHUB_SECRET=abcd...efgh -p WEBHOOK_GENERIC_SECRET=zyx...wvu
+```
+
+
+The output is
+```
+--> Deploying template "code-4/spring-samples" to project code-4
+
+     * With parameters:
+        * PROJECT_NAME=code-4
+        * APP_NAME=simple-data-provider
+        * SOURCE_REPOSITORY_URL=https://github.com/haf-tech/spring-samples
+        * SOURCE_REF=master
+        * SOURCE_SUB_MODULE_DIR=simple-data-provider
+        * APP_HTTP_PORT=9021
+        * WEBHOOK_GITHUB_SECRET=3...
+        * WEBHOOK_GENERIC_SECRET=9...
+
+--> Creating resources ...
+    buildconfig "simple-data-provider" created
+    deploymentconfig "simple-data-provider" created
+    imagestream "simple-data-provider" created
+    service "simple-data-provider" created
+    route "simple-data-provider" created
+--> Success
+    Use 'oc start-build simple-data-provider' to start a build.
+    Access your application via route 'simple-data-provider-code-4.8a09.starter-us-east-2.openshiftapps.com' 
+    Run 'oc status' to view your app.
+```
+
+*TargetPort* The current version of the kubernet-client can not handle a (string) parameter for an integer field. See https://github.com/kubernetes-client/java/pull/242. This is reason for the hard-coded target port.
+
+Openshift labels all created components with an app-label. This can be used to reference right components.
+```bash
+oc delete all -l app=simple-data-provider
+```
+
+Excurse to upload template
+```bash
+oc create -f .openshiftio/application-template.yaml
+```
+
+Delete template
+```bash
+oc delete template master-spring-template
+```
+
+Verify the existing templates
+```bash
+oc get template master-spring-template
+```
+
+Generate a template for (all) existing objects. Consider to remove afterwards the unnecessary objects, like Pods, Builds etc.
+```bash
+oc export all --as-template=master-spring-template masterSpringTemplate.yaml
+```
+
+Trigger a build using the generic or GitHub WebHook. To retrieve the URL
+```bash
+oc describe bc simple-data-provider
+```
+And trigger manually a new build
+```bash
+curl -kv -X POST https://<domain>:<port>/apis/build.openshift.io/v1/namespaces/<namespace>/buildconfigs/<app-name>/webhooks/<secret>/generic
