@@ -104,6 +104,9 @@ objects:
     strategy:
       sourceStrategy:
         env:
+        - name: MAVEN_ARGS
+#          value: clean package -DskipTests=false -pl ${SOURCE_SUB_MODULE_DIR} --also-make
+          value: clean package -DskipTests=false --also-make
         - name: MAVEN_ARGS_APPEND
           value: --also-make
         - name: MODULE_DIR
