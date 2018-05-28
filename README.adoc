@@ -13,7 +13,7 @@ Spring Eco samples for multiple Spring modules.
 |===
 
 == Openshift Integration
-Some of modules contains meta data for a Openshift integration. This integration enables the operation of the sub-module in a Openshift instance.
+Some of the modules contains meta data for a Openshift integration. This integration enables the operation of the sub-module in a Openshift instance.
 
 Enabled modules are:
 * simple-data-provider
@@ -84,3 +84,4 @@ oc describe bc simple-data-provider
 And trigger manually a new build
 ```bash
 curl -kv -X POST https://<domain>:<port>/apis/build.openshift.io/v1/namespaces/<namespace>/buildconfigs/<app-name>/webhooks/<secret>/generic
+
