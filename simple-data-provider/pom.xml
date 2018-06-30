@@ -197,7 +197,7 @@
 						<manifest>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>lib/</classpathPrefix>
-							<mainClass>com.daimler.vse.common.vees.SpringVeesApplication</mainClass>
+							<mainClass>com.haddouti.springeco.samples.provider.SimpleDataProviderApplication</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
