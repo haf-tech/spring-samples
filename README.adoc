@@ -5,11 +5,22 @@ Spring Eco samples for multiple Spring modules.
 
 . Spring samples
 |===
-| Topic | Description | Modules
+| Topic | Projects | Description | Modules
+
+| Test and presentation project
+| simple-data-provider
+| A general project for providing multiple interfaces for testing or presenting
+| Spring Boot
 
 | Service Registry & Discovery
+| eureka-client, eureka-server, eureka-service
 | Handles Service registration and discovery in Microservices landscape using Spring Cloud and Eureka
 | Spring Cloud, Netflix Eureka, Hystrix, FeignClient, Security
+
+| Apache Kafka
+| simple-kafka
+| Kafka examples with Producer and Consumer
+| Spring Boot, Apache Kafka, Confluent Kafka
 |===
 
 == Openshift Integration
