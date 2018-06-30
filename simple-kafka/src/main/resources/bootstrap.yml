@@ -1,0 +1,7 @@
+# Simple Kafka
+# bootstrap.yml
+
+# General
+spring:
+   application:
+      name: SimpleKafkaIntegration

@@ -1,0 +1,20 @@
+= Spring Eco Samples: Kafka
+:author: Hafid Haddouti
+
+Simple project for a Kafka integration and providing logic for subscriber and consumer parts.
+
+|===
+| Endpoint | Description 
+
+| /kafka/v1/send/{topic}/{message}
+| REST endpoint for pushing given message into the topic
+|===
+
+For running this example, use the given docker-compose file to create the Kafka and Zookeeper instances:
+```
+docker-compose -f docker-compose-single.yml up -d
+```
+and curl
+```
+curl http://localhost:9031/kafka/v1/send/a-topic.v1.case/A%20text%20message!
+```

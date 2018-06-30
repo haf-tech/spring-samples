@@ -1,0 +1,49 @@
+# Simple Data Provider
+
+#debug: true
+
+# #####################################
+# General
+server:
+   port: 9031
+
+security:
+  basic:
+    enabled: false
+  user:
+      name: client
+      password: password
+
+# #####################################
+# Management: General
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+ 
+# Info
+info:
+   app:
+      name: ${spring.application.name}
+      description: haf-tech Service
+      
+# #####################################
+# Kafka
+spring:
+  kafka:
+    consumer:
+      group-id: a-group
+      auto-offset-reset: earliest
+ 
+# #####################################
+# Config
+app:
+  kafka:
+    host: localhost:29092
+    groupId: a-group
+    clientId: a-client
+    topic: 
+      atopic: "a-topic.v1.case"
+    
