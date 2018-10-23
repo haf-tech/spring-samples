@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.haddouti.springeco.samples</groupId>
 	<artifactId>eureka-client</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>Eureka: Service Client1</name>
@@ -12,7 +12,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.9.RELEASE</version>
+		<version>2.0.6.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
@@ -21,12 +21,13 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 		
-		<version.spring>1.5.9.RELEASE</version.spring>
+		<version.spring>2.0.6.RELEASE</version.spring>
 	</properties>
 
 
 	<dependencyManagement>
 		<dependencies>
+		<!-- 
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-netflix</artifactId>
@@ -35,7 +36,6 @@
 				<scope>import</scope>
 			</dependency>
 
-		<!-- 
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter</artifactId>
@@ -44,16 +44,16 @@
 				<scope>import</scope>
 			</dependency>
 
+		 -->
 
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>Edgware.RELEASE</version>
+				<version>Finchley.SR1</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 
-		 -->
 		</dependencies>
 	</dependencyManagement>
 
@@ -75,9 +75,6 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-			<!-- 
-			<artifactId>spring-cloud-starter-eureka</artifactId>
-			 -->
 		</dependency>
 		
 		<!-- Spring: Actuator for health checks and metrics, as well with Hystrix if in classpath and expose /hystrix.stream -->
@@ -89,7 +86,7 @@
         <!-- Spring: Hystrix Support (@EnableCircuitBreaker) -->
         <dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-hystrix</artifactId>
+			<artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
 		</dependency>
         
         <!-- Spring: Hystrix Dashboard Support (@EnableHystrixDashboard), expose /hystrix -->

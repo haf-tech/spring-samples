@@ -5,22 +5,32 @@
 server:
    port: 9876
    
-security:
-  basic:
-    enabled: true
-  user:
+spring:
+  security:
+    user:
       name: user
-      password: password
+      password: password    
+         
+# Info
+info:
+   app:
+      name: ${spring.application.name}
+      description: haf-tech Service Registry         
          
 # ### Eureka
 # Do not self-register    
 eureka:
-   client:
+  client:
       registerWithEureka: false
       fetchRegistry: false
+      serviceUrl:
+        defaultZone: http://user:password@${eureka.instance.hostname}:${server.port}/eureka/
+  healthcheck:
+    enabled: true      
 
 # Logging
 logging:
     level:
        com.netflix.eureka: 'OFF'
        com.netflix.discovery: 'OFF'
+       

@@ -4,4 +4,4 @@
 # General
 spring:
    application:
-      name: Haftech-ServiceRegistry
+      name: SpringSamples-ServiceRegistry

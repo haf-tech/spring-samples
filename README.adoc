@@ -1,7 +1,7 @@
 = Spring Eco Samples
 :author: Hafid Haddouti
 
-Spring Eco samples for multiple Spring modules.
+Spring Eco samples for multiple Spring modules (Spring Boot 2.0.x).
 
 . Spring samples
 |===

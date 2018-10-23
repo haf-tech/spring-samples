@@ -19,6 +19,6 @@ Available Endpoints
 |===
 | URL | Description
 
-| http://localhost:9876/ | Eureka Dashboard
+| http://localhost:9876/ | Eureka Dashboard. Credentials in application.yml (user/password)
 | http://localhost:9876/eureka/apps | Prints out the information for all applications. Used from different clients to establish the connections, like FeignClient + Ribbon
 |===

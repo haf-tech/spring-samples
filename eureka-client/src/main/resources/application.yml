@@ -5,19 +5,24 @@
 server:
    port: 9011
 
-security:
-  basic:
-    enabled: true
-  user:
-      name: client
+spring:
+  security:
+    user:
+      name: user
       password: password
       
 # Info
 info:
    app:
       name: ${spring.application.name}
-      description: haf-tech Service
+      description: haf-tech Service Client
       
+# Activate all management endpoints      
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"      
          
 # ### Eureka
 eureka:
@@ -35,8 +40,8 @@ eureka:
          enabled: true   
    instance:
       leaseRenewalIntervalInSeconds: 10
-      statusPageUrlPath: /info
-      healthCheckUrlPath: /health
+      statusPageUrlPath: /actuator/info
+      healthCheckUrlPath: /actuator/health
    metadataMap:
       instanceId: ${vcap.application.instance_id:${spring.application.name}:${spring.application.instance_id:${server.port}}}
 
@@ -49,9 +54,9 @@ feign:
 # ### Application relevant properties
 se:
    sc:
-     # Service1: name, used for linking
+     # Service name, used for linking, instead tight coupling
      service1:
-        name: se-serviceapp1
+        name: SpringSamples-ServiceEndpoint-01
         
         
         
@@ -80,6 +85,6 @@ ribbon:
     enabled: false   
 
 # Eureka is deactivated. In this case set the direct relation to the service endpoint
-se-serviceapp1:
+SpringSamples-ServiceEndpoint-01:
   ribbon:
      listOfServers: localhost:9021

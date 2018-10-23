@@ -4,4 +4,4 @@
 # General
 spring:
    application:
-      name: SE-ServiceApp1
+      name: SpringSamples-ServiceEndpoint-01

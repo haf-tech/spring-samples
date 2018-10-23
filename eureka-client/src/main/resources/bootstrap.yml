@@ -4,4 +4,4 @@
 # General
 spring:
    application:
-      name: Haftech-ServiceClient1
+      name: SpringSamples-ServiceClient-01

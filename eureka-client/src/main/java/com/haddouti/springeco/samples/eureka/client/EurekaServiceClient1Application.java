@@ -3,17 +3,20 @@ package com.haddouti.springeco.samples.eureka.client;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
+import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
-import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboard;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,7 +35,7 @@ import com.haddouti.springeco.samples.eureka.client.feign.Service1Command;
 @SpringBootApplication
 @RestController
 @Configuration
-public class EurekaServiceClient1Application {
+public class EurekaServiceClient1Application extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private DiscoveryClient discoveryClient;
@@ -44,7 +47,15 @@ public class EurekaServiceClient1Application {
 	private Service1Command service1;
 
 	public static void main(final String[] args) {
-		SpringApplication.run(EurekaServiceClient1Application.class, args);
+		new SpringApplicationBuilder(EurekaServiceClient1Application.class).web(WebApplicationType.SERVLET).run(args);
+	}
+
+	@Override
+	public void configure(final WebSecurity web) throws Exception {
+		// Security enable flag is deactivated in Spring Boot 2
+		// This is the workaround for the new Spring Security constraints -
+		// helpful for Hystrix and Dashboard
+		web.ignoring().antMatchers("/actuator/**");
 	}
 
 	/* ********* Simplicity - RestController integrated *********** */
@@ -62,7 +73,7 @@ public class EurekaServiceClient1Application {
 
 	@RequestMapping("/c")
 	public String home() {
-		return "RestTemplateClient=" + restTemplate.getForEntity("http://se-serviceapp1/s", String.class).getBody();
+		return "RestTemplateClient=" + restTemplate.getForEntity("http://SpringSamples-ServiceEndpoint-01/s", String.class).getBody();
 	}
 
 	/**
