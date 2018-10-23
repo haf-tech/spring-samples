@@ -3,6 +3,10 @@ package com.haddouti.springeco.samples.provider;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.client.BufferingClientHttpRequestFactory;
+import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.web.client.RestTemplate;
 
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -36,5 +40,15 @@ public class SimpleDataProviderApplication {
 		return new ApiInfoBuilder().title("Data Provider").description("Multiple data interfaces")
 				.contact(new Contact("Hafid Haddouti", "https://github.com/haf-tech/spring-samples", "code@haddouti.com")).license("MIT").licenseUrl("")
 				.version(buildVersion).build();
+	}
+
+	@Bean
+	public RestTemplate restTemplate() {
+		// Use a buffered client otherwise we lose the response in case of
+		// response debugging
+		final ClientHttpRequestFactory factory = new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory());
+		final RestTemplate restTemplate = new RestTemplate(factory);
+
+		return restTemplate;
 	}
 }

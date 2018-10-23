@@ -1,6 +1,7 @@
 # Simple Data Provider
 
- ### General
+### General
+debug: false 
 server:
    port: 9021
 
@@ -17,3 +18,13 @@ info:
       name: ${spring.application.name}
       description: haf-tech Service
  
+
+config:
+  # Supported backend systems: IEX, FMP
+  stock.backend.id: FMP
+  
+# ### Logging
+logging.level:
+  com.haddouti.springeco.samples.provider: DEBUG  
+  
+   

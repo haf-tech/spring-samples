@@ -21,5 +21,9 @@ Simple project providing multiple endpoints to deliver static or dynamic data. S
 | data/external/ip
 | Delivers the current IP of this app
 | http://httpbin.org
+
+| data/external/stockPrice/{stockCompanyId}
+| Delivers the stock price for the given Company ID (like AAPL, MSFT, HPQ, DVMT etc). The app property 'stock.backend.id' selects the relevant backend system.
+| IEX or Finance Modeling Prep
 |===
 
