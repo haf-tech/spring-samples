@@ -23,6 +23,38 @@ Spring Eco samples for multiple Spring modules (Spring Boot 2.0.x).
 | Spring Boot, Apache Kafka, Confluent Kafka
 |===
 
+== Service Registry & Discovery
+To use the whole functionality start the apps in the following order
+
+|===
+| # | Action | Description 
+
+| 1
+| java -jar -Dspring.profiles.active=stock-fmp simple-data-provider-0.0.1-SNAPSHOT.jar
+| Start SimpleDataProvide with FMP as stock backend system. Listening on port 9042
+
+| 2
+| java -jar -Dspring.profiles.active=stock-iex simple-data-provider-0.0.1-SNAPSHOT.jar
+| Start SimpleDataProvide with IEX as stock backend system. Listening on port 9043
+
+| 3
+| java -jar eureka-server-0.0.2-SNAPSHOT.jar
+| Start the service registry with Eureka. Listening on port 9876
+
+| 4
+| java -jar -Dspring.profiles.active=stock-fmp eureka-service-0.0.2-SNAPSHOT.jar
+| Start the service with a releation to SimpleDataProvider FMP instance. Listening on port 9022
+
+| 5
+| java -jar -Dspring.profiles.active=stock-iex eureka-service-0.0.2-SNAPSHOT.jar
+| Start the service with a releation to SimpleDataProvider IEX instance. Listening on port 9023
+
+| 6
+| java -jar eureka-client-0.0.2-SNAPSHOT.jar
+| Start the client and retrieve the service instances from Service Registry. Listening on port 9011
+|===
+
+
 == Openshift Integration
 Some of the modules contains meta data for a Openshift integration. This integration enables the operation of the sub-module in a Openshift instance.
 

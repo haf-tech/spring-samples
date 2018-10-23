@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.haddouti.springeco.samples.eureka.client.feign.Service1Command;
+import com.haddouti.springeco.samples.eureka.client.feign.Service1StockCommand;
 
 // Eureka
 @EnableDiscoveryClient
@@ -45,6 +46,9 @@ public class EurekaServiceClient1Application extends WebSecurityConfigurerAdapte
 
 	@Autowired
 	private Service1Command service1;
+
+	@Autowired
+	private Service1StockCommand service1Stock;
 
 	public static void main(final String[] args) {
 		new SpringApplicationBuilder(EurekaServiceClient1Application.class).web(WebApplicationType.SERVLET).run(args);
@@ -86,6 +90,11 @@ public class EurekaServiceClient1Application extends WebSecurityConfigurerAdapte
 	@RequestMapping("/c2")
 	public String service1WithFeign() {
 		return "FeignClient=" + service1.callService1();
+	}
+
+	@RequestMapping("/sp/{companyId}")
+	public String service1WithFeign(@PathVariable final String companyId) {
+		return "FeignClient=" + service1Stock.callService1(companyId);
 	}
 
 	@RequestMapping("/lookup/{serviceId}")

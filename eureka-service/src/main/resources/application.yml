@@ -40,7 +40,9 @@ info:
 config:
   # deactivate security
   security:
-      enabled: false      
+      enabled: false   
+  # Backend (direct connection)
+  stock.url: http://localhost:9041/data/external/stockPrice/
    
 # ### Eureka
 eureka:
@@ -65,3 +67,33 @@ eureka:
       env: ${spring.profiles.active}
       blub: 'ABC'   
 
+ 
+---
+# stock-fmp
+# Stock Backend: FMP
+ 
+spring:
+   profiles: stock-fmp
+
+server:
+   port: 9022
+   
+config:
+  # Backend (direct connection)
+  stock.url: http://localhost:9042/data/external/stockPrice/
+  
+---
+# stock-fmp
+# Stock Backend: IEX
+ 
+spring:
+   profiles: stock-iex
+
+server:
+   port: 9023
+   
+config:
+  # Backend (direct connection)
+  stock.url: http://localhost:9043/data/external/stockPrice/
+  
+ 

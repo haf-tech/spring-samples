@@ -3,7 +3,7 @@
 ### General
 debug: false 
 server:
-   port: 9021
+   port: 9041
 
 security:
   basic:
@@ -28,3 +28,32 @@ logging.level:
   com.haddouti.springeco.samples.provider: DEBUG  
   
    
+# ### Profiles
+---
+# stock-fmp
+# Stock Backend: FMP
+ 
+spring:
+   profiles: stock-fmp
+
+server:
+   port: 9042
+   
+config:
+  # Supported backend systems: IEX, FMP
+  stock.backend.id: FMP
+  
+---
+# stock-fmp
+# Stock Backend: IEX
+ 
+spring:
+   profiles: stock-iex
+
+server:
+   port: 9043
+   
+config:
+  # Supported backend systems: IEX, FMP
+  stock.backend.id: IEX
+    

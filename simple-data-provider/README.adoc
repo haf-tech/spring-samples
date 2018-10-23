@@ -27,3 +27,8 @@ Simple project providing multiple endpoints to deliver static or dynamic data. S
 | IEX or Finance Modeling Prep
 |===
 
+Especially for the Stock price endpoint is it possible to start the instance with a profile to select a specific finance backend system
+```-Dspring.profiles.active=stock-fmp```
+or
+```-Dspring.profiles.active=stock-iex```
+this results in running instances listening on different ports (9042 or 9043)

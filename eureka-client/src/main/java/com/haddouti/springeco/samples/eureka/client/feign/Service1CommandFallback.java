@@ -2,8 +2,6 @@ package com.haddouti.springeco.samples.eureka.client.feign;
 
 import org.springframework.stereotype.Component;
 
-import com.haddouti.springeco.samples.eureka.client.feign.Service1Command;
-
 /**
  * Fallback implementation
  *
@@ -11,11 +9,16 @@ import com.haddouti.springeco.samples.eureka.client.feign.Service1Command;
  * the service {@link Service1Command} failed.
  */
 @Component
-public class Service1CommandFallback implements Service1Command {
+public class Service1CommandFallback implements Service1Command, Service1StockCommand {
 
 	@Override
 	public String callService1() {
 		return new String("ServiceApp1 request failed!");
+	}
+
+	@Override
+	public String callService1(final String companyId) {
+		return new String("ServiceApp1 request failed, for companyId: " + companyId);
 	}
 
 }
