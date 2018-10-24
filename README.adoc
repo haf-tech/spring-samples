@@ -24,7 +24,7 @@ Spring Eco samples for multiple Spring modules (Spring Boot 2.0.x).
 |===
 
 == Service Registry & Discovery
-To use the whole functionality start the apps in the following order
+To use the whole functionality start the apps using the docker compose file or start them manually in the following order
 
 |===
 | # | Action | Description 
@@ -53,6 +53,13 @@ To use the whole functionality start the apps in the following order
 | java -jar eureka-client-0.0.2-SNAPSHOT.jar
 | Start the client and retrieve the service instances from Service Registry. Listening on port 9011
 |===
+
+For the docker compose way:
+```bash
+$ cd docker
+$ VER=0.0.2-SNAPSHOT docker-compose -f docker-compose-eureka.ml up
+```
+The docker compose file has a variable VER referencing the version number. For simplicity will be the same version number used, for fetching the docker image from docker hub.
 
 
 == Openshift Integration

@@ -22,6 +22,11 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
+		
+		<version.dockerfile-maven>1.4.8</version.dockerfile-maven>
+		
+		<!-- Docker -->
+		<docker.repository>hafhub</docker.repository>
 	</properties>
 
 
@@ -91,4 +96,68 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+	
+	<profiles>
+	
+		<profile>
+			<id>withDocker</id>
+			<activation></activation>
+
+			<build>
+				<plugins>
+					<!-- Copy Dockerfile: Docker plugin needs Dockerfile and jar in some directory with relative path access -->
+					
+					<plugin>
+						<artifactId>maven-resources-plugin</artifactId>
+						<version>2.7</version>
+						<executions>
+							<execution>
+								<id>copy-resources-dockerfile</id>
+								<phase>prepare-package</phase>
+								<goals>
+									<goal>copy-resources</goal>
+								</goals>
+								<configuration>
+									<outputDirectory>${project.build.directory}</outputDirectory>
+									<resources>
+										<resource>
+											<directory>${project.basedir}/src/main/resources</directory>
+											<includes>
+												<include>Dockerfile</include>
+											</includes>
+										</resource>
+									</resources>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+			
+					<plugin>
+						<groupId>com.spotify</groupId>
+						<artifactId>dockerfile-maven-plugin</artifactId>
+						<version>${version.dockerfile-maven}</version>
+						<executions>
+							<execution>
+								<id>default</id>
+								<goals>
+									<goal>build</goal>
+									<!-- <goal>push</goal> -->
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<!-- Directory for the Dockerfile and jar-->
+							<contextDirectory>${project.build.directory}</contextDirectory>
+							<repository>${docker.repository}/${project.artifactId}</repository>
+							<tag>${project.version}</tag>
+							<buildArgs>
+								<JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+							</buildArgs>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>

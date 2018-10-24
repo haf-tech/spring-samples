@@ -25,6 +25,8 @@ eureka:
       fetchRegistry: false
       serviceUrl:
         defaultZone: http://user:password@${eureka.instance.hostname}:${server.port}/eureka/
+  instance:
+      leaseRenewalIntervalInSeconds: 10
   healthcheck:
     enabled: true      
 
