@@ -1,13 +1,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
 	<groupId>com.haddouti.springeco.samples</groupId>
-	<artifactId>eureka-client</artifactId>
+	<artifactId>simple-config-server</artifactId>
 	<version>0.0.3-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>Eureka: Service Client1</name>
-	<description>Eureka Client: #1; Test client registry and discovery</description>
+	<name>Simple Config Server</name>
+	<description>Spring Cloud Config Servery</description>
+
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -20,8 +22,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-
-		<version.spring>2.0.6.RELEASE</version.spring>
 		
 		<version.dockerfile-maven>1.4.8</version.dockerfile-maven>
 		
@@ -32,6 +32,14 @@
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter</artifactId>
+				<version>2.0.6.RELEASE</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
@@ -49,53 +57,18 @@
 		<!-- ################ Spring ################## -->
 		<!-- ########################################## -->
 
-		<!-- Spring: General Spring Boot <dependency> <groupId>org.springframework.boot</groupId> 
-			<artifactId>spring-boot-starter</artifactId> <scope>import</scope> </dependency> -->
-
-		<!-- Spring: Eureka - Service Discovery/Registry -->
+		<!-- Spring Cloud Config -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+			<artifactId>spring-cloud-config-server</artifactId>
 		</dependency>
-
-		<!-- Spring: Actuator for health checks and metrics, as well with Hystrix 
-			if in classpath and expose /hystrix.stream -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
-
-		<!-- Spring: Hystrix Support (@EnableCircuitBreaker) -->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
-		</dependency>
-
-		<!-- Spring: Hystrix Dashboard Support (@EnableHystrixDashboard), expose 
-			/hystrix -->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-hystrix-dashboard</artifactId>
-		</dependency>
-
-		<!-- Spring: FeignClient Support -->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-openfeign</artifactId>
-		</dependency>
-
-		<!-- Spring: Security - to secure the app and registry -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
-
-		<!-- Spring: Testing Support -->
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
 	</dependencies>
 
 
@@ -104,30 +77,30 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.7.0</version>
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
 				</configuration>
 			</plugin>
-
+			
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>
-
+	
+	
 	<profiles>
+	
 		<profile>
 			<id>withDocker</id>
 			<activation></activation>
 
 			<build>
 				<plugins>
-					<!-- Copy Dockerfile: Docker plugin needs Dockerfile and jar in some 
-						directory with relative path access -->
-
+					<!-- Copy Dockerfile: Docker plugin needs Dockerfile and jar in some directory with relative path access -->
+					
 					<plugin>
 						<artifactId>maven-resources-plugin</artifactId>
 						<version>2.7</version>
@@ -152,7 +125,7 @@
 							</execution>
 						</executions>
 					</plugin>
-
+			
 					<plugin>
 						<groupId>com.spotify</groupId>
 						<artifactId>dockerfile-maven-plugin</artifactId>
@@ -167,7 +140,7 @@
 							</execution>
 						</executions>
 						<configuration>
-							<!-- Directory for the Dockerfile and jar -->
+							<!-- Directory for the Dockerfile and jar-->
 							<contextDirectory>${project.build.directory}</contextDirectory>
 							<repository>${docker.repository}/${project.artifactId}</repository>
 							<tag>${project.version}</tag>

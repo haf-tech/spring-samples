@@ -14,8 +14,8 @@ Spring Eco samples for multiple Spring modules (Spring Boot 2.0.x).
 
 | Service Registry & Discovery
 | eureka-client, eureka-server, eureka-service
-| Handles Service registration and discovery in Microservices landscape using Spring Cloud and Eureka
-| Spring Cloud, Netflix Eureka, Hystrix, FeignClient, Security
+| Handles Service registration and discovery in Microservices landscape using Spring Cloud and Eureka. With Docker.
+| Spring Cloud, Spring Cloud Config, Netflix Eureka, Hystrix, FeignClient, Security
 
 | Apache Kafka
 | simple-kafka
@@ -57,7 +57,7 @@ To use the whole functionality start the apps using the docker compose file or s
 For the docker compose way:
 ```bash
 $ cd docker
-$ VER=0.0.2-SNAPSHOT docker-compose -f docker-compose-eureka.ml up
+$ VER=0.0.3-SNAPSHOT docker-compose -f docker-compose-eureka.ml up
 ```
 The docker compose file has a variable VER referencing the version number. For simplicity will be the same version number used, for fetching the docker image from docker hub.
 

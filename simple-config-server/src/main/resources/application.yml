@@ -1,0 +1,29 @@
+# Service Config
+# application.yml
+
+# ### General
+debug: true
+server:
+   port: 8888
+   
+# Info
+info:
+   app:
+      name: ${spring.application.name}
+      description: haf-tech Service Config Server         
+         
+         
+spring:
+  security:
+    user:
+      name: user
+      password: password    
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/haf-tech/spring-samples
+          searchPaths: /{application}/src/main/resources
+      
+# SpringSamples-ServiceRegistry     
+      

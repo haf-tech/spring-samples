@@ -1,0 +1,7 @@
+= Spring Eco Samples: Spring Cloud Config Server
+:author: Hafid Haddouti
+
+A simple Spring Cloud Config server for internal/local development and testing of the surrounding projects. Supports following resources
+
+. Default: Local files, using the application.yml on the filesystem (do not work)
+. Remote profile, use the Git repositories

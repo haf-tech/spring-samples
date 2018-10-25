@@ -4,7 +4,7 @@
 
 	<groupId>com.haddouti.springeco.samples</groupId>
 	<artifactId>simple-data-provider</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.3-SNAPSHOT</version>
 
 	<name>Data Provider</name>
 	<description>A simple data provider, providing different endpoints for static and dynamic data.</description>
