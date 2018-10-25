@@ -1,0 +1,120 @@
+# docker compose file for the Coud discovery example using eureka
+version: '3'
+services:
+
+  simple-data-provider-fmp:
+    image: hafhub/simple-data-provider:${VER}
+    ports:
+#    - "9042:9042"
+    - "9042:8080"
+    networks:
+    - playground
+    environment:
+    - SPRING_PROFILES_ACTIVE=stock-fmp,default-port
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+
+  simple-data-provider-iex:
+    image: hafhub/simple-data-provider:${VER}
+    ports:
+#    - "9043:9043"
+    - "9043:8080"
+    networks:
+    - playground
+    environment:
+    - SPRING_PROFILES_ACTIVE=stock-iex,default-port
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+
+  eureka-server:
+    image: hafhub/eureka-server:${VER}
+    ports:
+    - "9876:9876"
+    networks:
+    - playground
+    depends_on:
+    - simple-data-provider-fmp
+    - simple-data-provider-iex
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+
+  eureka-service-fmp:
+    image: hafhub/eureka-service:${VER}
+    ports:
+#    - "9022:9022"
+    - "9022:8080"
+    networks:
+    - playground
+    environment:
+    - SPRING_PROFILES_ACTIVE=stock-fmp,default-port
+    - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://user:password@eureka-server:9876/eureka
+    - CONFIG_STOCK_URL=http://simple-data-provider-fmp:9042/data/external/stockPrice/
+    depends_on:
+    - eureka-server
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+
+  eureka-service-iex:
+    image: hafhub/eureka-service:${VER}
+    ports:
+#    - "9023:9023"
+    - "9023:8080"
+    networks:
+    - playground
+    environment:
+    - SPRING_PROFILES_ACTIVE=stock-iex,default-port
+    - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://user:password@eureka-server:9876/eureka
+    - CONFIG_STOCK_URL=http://simple-data-provider-iex:9043/data/external/stockPrice/
+    depends_on:
+    - eureka-server
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+
+  eureka-client:
+    image: hafhub/eureka-client:${VER}
+    ports:
+    - "9011:9011"
+    networks:
+    - playground
+    environment:
+    - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://user:password@eureka-server:9876/eureka
+    depends_on:
+    - eureka-service-fmp
+    - eureka-service-iex
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy: 
+        condition: none
+      
+networks:
+  playground: 
+    driver: bridge
+    

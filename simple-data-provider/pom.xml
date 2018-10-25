@@ -4,7 +4,7 @@
 
 	<groupId>com.haddouti.springeco.samples</groupId>
 	<artifactId>simple-data-provider</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 
 	<name>Data Provider</name>
 	<description>A simple data provider, providing different endpoints for static and dynamic data.</description>
@@ -42,6 +42,8 @@
 		<version.swagger>1.5.6</version.swagger>
 		<version.springfox.staticdoc>2.4.0</version.springfox.staticdoc>
 
+		<version.dockerfile-maven>1.4.8</version.dockerfile-maven>
+		
 		<!-- Swagger properties -->
 		<asciidoctor.input.directory>${project.basedir}/src/main/asciidoc</asciidoctor.input.directory>
 
@@ -53,6 +55,9 @@
 		<asciidoctor.pdf.output.directory>${project.build.directory}/asciidoc/pdf</asciidoctor.pdf.output.directory>
 
 		<swagger.input>${swagger.output.dir}/swagger.json</swagger.input>
+		
+		<!-- Docker -->
+		<docker.repository>hafhub</docker.repository>
 	</properties>
 
 
@@ -123,7 +128,6 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>3.8.1</version>
 		</dependency>
 
 
@@ -170,7 +174,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.7.0</version>
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
@@ -181,7 +184,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.21.0</version>
 				<configuration>
 					<includes>
 						<include>**/*Test.java</include>
@@ -200,7 +202,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.4</version>
 				<configuration>
 					<archive>
 						<manifest>
@@ -216,7 +217,6 @@
 			<!-- Copy the generated files -->
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.7</version>
 				<executions>
 					<execution>
 						<id>copy-resources</id>
@@ -362,6 +362,68 @@
 				</plugins>
 			</build>
 		</profile>
+
+
+		<profile>
+			<id>withDocker</id>
+			<activation></activation>
+
+			<build>
+				<plugins>
+					<!-- Copy Dockerfile: Docker plugin needs Dockerfile and jar in some directory with relative path access -->
+					
+					<plugin>
+						<artifactId>maven-resources-plugin</artifactId>
+						<version>2.7</version>
+						<executions>
+							<execution>
+								<id>copy-resources-dockerfile</id>
+								<phase>prepare-package</phase>
+								<goals>
+									<goal>copy-resources</goal>
+								</goals>
+								<configuration>
+									<outputDirectory>${project.build.directory}</outputDirectory>
+									<resources>
+										<resource>
+											<directory>${project.basedir}/src/main/resources</directory>
+											<includes>
+												<include>Dockerfile</include>
+											</includes>
+										</resource>
+									</resources>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+			
+					<plugin>
+						<groupId>com.spotify</groupId>
+						<artifactId>dockerfile-maven-plugin</artifactId>
+						<version>${version.dockerfile-maven}</version>
+						<executions>
+							<execution>
+								<id>default</id>
+								<goals>
+									<goal>build</goal>
+									<!-- <goal>push</goal> -->
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<!-- Directory for the Dockerfile and jar-->
+							<contextDirectory>${project.build.directory}</contextDirectory>
+							<repository>${docker.repository}/${project.artifactId}</repository>
+							<tag>${project.version}</tag>
+							<buildArgs>
+								<JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+							</buildArgs>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
 	</profiles>
 
 </project>

@@ -20,32 +20,18 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		
+
 		<version.spring>2.0.6.RELEASE</version.spring>
+		
+		<version.dockerfile-maven>1.4.8</version.dockerfile-maven>
+		
+		<!-- Docker -->
+		<docker.repository>hafhub</docker.repository>
 	</properties>
 
 
 	<dependencyManagement>
 		<dependencies>
-		<!-- 
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-netflix</artifactId>
-				<version>1.4.0.RELEASE</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-
-			<dependency>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-starter</artifactId>
-				<version>1.5.9.RELEASE</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-
-		 -->
-
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
@@ -63,52 +49,49 @@
 		<!-- ################ Spring ################## -->
 		<!-- ########################################## -->
 
-		<!-- Spring: General Spring Boot 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
-			<scope>import</scope>
-		</dependency>
-		-->
+		<!-- Spring: General Spring Boot <dependency> <groupId>org.springframework.boot</groupId> 
+			<artifactId>spring-boot-starter</artifactId> <scope>import</scope> </dependency> -->
 
 		<!-- Spring: Eureka - Service Discovery/Registry -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
-		
-		<!-- Spring: Actuator for health checks and metrics, as well with Hystrix if in classpath and expose /hystrix.stream -->
+
+		<!-- Spring: Actuator for health checks and metrics, as well with Hystrix 
+			if in classpath and expose /hystrix.stream -->
 		<dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-        
-        <!-- Spring: Hystrix Support (@EnableCircuitBreaker) -->
-        <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
+		<!-- Spring: Hystrix Support (@EnableCircuitBreaker) -->
+		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
 		</dependency>
-        
-        <!-- Spring: Hystrix Dashboard Support (@EnableHystrixDashboard), expose /hystrix -->
-        <dependency>
+
+		<!-- Spring: Hystrix Dashboard Support (@EnableHystrixDashboard), expose 
+			/hystrix -->
+		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-hystrix-dashboard</artifactId>
 		</dependency>
-		
-        <!-- Spring: FeignClient Support -->
-        <dependency>
+
+		<!-- Spring: FeignClient Support -->
+		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-openfeign</artifactId>
 		</dependency>
-		
+
 		<!-- Spring: Security - to secure the app and registry -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
-		
-        <!-- Spring: Testing Support -->
-        <dependency>
+
+		<!-- Spring: Testing Support -->
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
@@ -134,4 +117,67 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>withDocker</id>
+			<activation></activation>
+
+			<build>
+				<plugins>
+					<!-- Copy Dockerfile: Docker plugin needs Dockerfile and jar in some 
+						directory with relative path access -->
+
+					<plugin>
+						<artifactId>maven-resources-plugin</artifactId>
+						<version>2.7</version>
+						<executions>
+							<execution>
+								<id>copy-resources-dockerfile</id>
+								<phase>prepare-package</phase>
+								<goals>
+									<goal>copy-resources</goal>
+								</goals>
+								<configuration>
+									<outputDirectory>${project.build.directory}</outputDirectory>
+									<resources>
+										<resource>
+											<directory>${project.basedir}/src/main/resources</directory>
+											<includes>
+												<include>Dockerfile</include>
+											</includes>
+										</resource>
+									</resources>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+
+					<plugin>
+						<groupId>com.spotify</groupId>
+						<artifactId>dockerfile-maven-plugin</artifactId>
+						<version>${version.dockerfile-maven}</version>
+						<executions>
+							<execution>
+								<id>default</id>
+								<goals>
+									<goal>build</goal>
+									<!-- <goal>push</goal> -->
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<!-- Directory for the Dockerfile and jar -->
+							<contextDirectory>${project.build.directory}</contextDirectory>
+							<repository>${docker.repository}/${project.artifactId}</repository>
+							<tag>${project.version}</tag>
+							<buildArgs>
+								<JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+							</buildArgs>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>
