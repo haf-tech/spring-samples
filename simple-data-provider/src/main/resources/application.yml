@@ -56,4 +56,14 @@ server:
 config:
   # Supported backend systems: IEX, FMP
   stock.backend.id: IEX
+  
+---
+# default-port
+# Relevant for docker usage (convention over configuration - cloud provider expects this port for default routing)
+ 
+spring:
+   profiles: default-port
+
+server:
+   port: 8080  
     

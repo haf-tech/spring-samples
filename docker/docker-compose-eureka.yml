@@ -5,11 +5,12 @@ services:
   simple-data-provider-fmp:
     image: hafhub/simple-data-provider:${VER}
     ports:
-    - "9042:9042"
+#    - "9042:9042"
+    - "9042:8080"
     networks:
     - playground
     environment:
-    - SPRING_PROFILES_ACTIVE=stock-fmp
+    - SPRING_PROFILES_ACTIVE=stock-fmp,default-port
     deploy:
       replicas: 1
       update_config:
@@ -21,11 +22,12 @@ services:
   simple-data-provider-iex:
     image: hafhub/simple-data-provider:${VER}
     ports:
-    - "9043:9043"
+#    - "9043:9043"
+    - "9043:8080"
     networks:
     - playground
     environment:
-    - SPRING_PROFILES_ACTIVE=stock-iex
+    - SPRING_PROFILES_ACTIVE=stock-iex,default-port
     deploy:
       replicas: 1
       update_config:
@@ -54,11 +56,12 @@ services:
   eureka-service-fmp:
     image: hafhub/eureka-service:${VER}
     ports:
-    - "9022:9022"
+#    - "9022:9022"
+    - "9022:8080"
     networks:
     - playground
     environment:
-    - SPRING_PROFILES_ACTIVE=stock-fmp
+    - SPRING_PROFILES_ACTIVE=stock-fmp,default-port
     - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://user:password@eureka-server:9876/eureka
     - CONFIG_STOCK_URL=http://simple-data-provider-fmp:9042/data/external/stockPrice/
     depends_on:
@@ -74,11 +77,12 @@ services:
   eureka-service-iex:
     image: hafhub/eureka-service:${VER}
     ports:
-    - "9023:9023"
+#    - "9023:9023"
+    - "9023:8080"
     networks:
     - playground
     environment:
-    - SPRING_PROFILES_ACTIVE=stock-iex
+    - SPRING_PROFILES_ACTIVE=stock-iex,default-port
     - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://user:password@eureka-server:9876/eureka
     - CONFIG_STOCK_URL=http://simple-data-provider-iex:9043/data/external/stockPrice/
     depends_on:

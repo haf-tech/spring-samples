@@ -1,0 +1,49 @@
+---
+applications:
+# Multiple apps to test the service discovery on the same cloud platform
+# Service discovery will be binded as external service
+
+# App: simple-data-provider with FMP variant
+- name: simple-data-provider-fmp
+  memory: 512M
+  health-check-type: process
+  instances: 1
+  timeout: 180
+  docker:
+    image: hafhub/simple-data-provider:0.0.2-SNAPSHOT
+  routes:
+  - route: simple-data-provider-fmp.apps.internal
+  env: 
+    SPRING_PROFILES_ACTIVE: stock-fmp,default-port
+    
+# App: simple-data-provider with IEX variant    
+- name: simple-data-provider-iex
+  memory: 512M
+  health-check-type: process
+  instances: 1
+  timeout: 180
+  docker:
+    image: hafhub/simple-data-provider:0.0.2-SNAPSHOT
+  env: 
+    SPRING_PROFILES_ACTIVE: stock-iex,default-port
+    
+
+# App: service facade for the FMP backend; will be register itself at the service discovery
+# Expects a service-discovery service 'eureka-service'
+- name: simple-data-service-fmp
+  memory: 512M
+  health-check-type: process
+  instances: 1
+  timeout: 180
+  docker:
+    image: hafhub/eureka-service:0.0.2-SNAPSHOT
+  services:
+    - eureka-service
+  env: 
+    SPRING_PROFILES_ACTIVE: stock-fmp,default-port
+    EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: ${vcap.services.eureka-service.credentials.uri:http://localhost:8761}/eureka/
+#    CONFIG_STOCK_URL: http://simple-data-provider-fmp/data/external/stockPrice/
+    CONFIG_STOCK_URL: http://simple-data-provider-fmp.apps.internal:8080/data/external/stockPrice/
+    
+    
+            
